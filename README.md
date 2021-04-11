@@ -12,7 +12,7 @@ Process of making backend for TwoxOne
 
 ## Update Project
 
-Update Date  : 11/04/2021
+Update Date  : 11/04/2021 <br>
 Update Note  : CRUD in table `premiere location`, request for search by nmae, request for sorting
 
 ## Getting Started
