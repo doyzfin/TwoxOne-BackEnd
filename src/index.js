@@ -18,11 +18,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/api/v1', routerNavigation)
 
-// app.post('/movie', (req, res) => {
-//   console.log('Post Movie Work')
-//   console.log(req.body)
-//   // res.status(404).send('Hello World')
-// })
+app.post('/movie', (req, res) => {
+  console.log('Post Movie Work')
+  console.log(req.body.movieName)
+  // res.status(404).send('Hello World')
+})
 
 app.listen(port, () => {
   console.log(`Express app is lisneting on port ${port} !`)

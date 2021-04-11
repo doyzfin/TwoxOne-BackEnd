@@ -10,5 +10,11 @@ const movieController = require('./movie_controller')
 // 2
 Route.get('/hello', movieController.sayHello)
 Route.get('/', movieController.getAllMovie)
+Route.get('/search', movieController.searchbyName)
+Route.get('/sort', movieController.sortYear)
+Route.get('/:id', movieController.getMovieById)
+Route.post('/', movieController.postMovie)
+Route.patch('/:id', movieController.updateMovie)
+Route.delete('/:id', movieController.deleteMovie)
 
 module.exports = Route
