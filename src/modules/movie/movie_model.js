@@ -1,11 +1,11 @@
 const connection = require('../../config/mysql')
 
 module.exports = {
-  getDataAll: (limit, offset) => {
+  getDataAll: (search, sort, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM movie LIMIT ? OFFSET ?',
-        [limit, offset],
+        'SELECT * FROM movie WHERE movie_name LIKE "%"?"%" ORDER BY ? LIMIT ? OFFSET ? ',
+        [search, sort, limit, offset],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }
@@ -70,26 +70,26 @@ module.exports = {
         }
       )
     })
-  },
-  searchName: (movieName) => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'SELECT * FROM movie WHERE movie_name  LIKE "%"?"%"',
-        movieName,
-        (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
-        }
-      )
-    })
-  },
-  sorting: () => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'SELECT *FROM movie ORDER BY movie_name,movie_release_date ASC;',
-        (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
-        }
-      )
-    })
   }
+  // searchName: (movieName) => {
+  //   return new Promise((resolve, reject) => {
+  //     connection.query(
+  //       'SELECT * FROM movie WHERE movie_name  LIKE "%"?"%"',
+  //       movieName,
+  //       (error, result) => {
+  //         !error ? resolve(result) : reject(new Error(error))
+  //       }
+  //     )
+  //   })
+  // },
+  // sorting: () => {
+  //   return new Promise((resolve, reject) => {
+  //     connection.query(
+  //       'SELECT * FROM movie ORDER BY movie_name,movie_release_date ASC;',
+  //       (error, result) => {
+  //         !error ? resolve(result) : reject(new Error(error))
+  //       }
+  //     )
+  //   })
+  // }
 }

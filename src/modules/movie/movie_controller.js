@@ -7,9 +7,15 @@ module.exports = {
   },
   getAllMovie: async (req, res) => {
     try {
-      let { page, limit } = req.query
+      let { search, page, limit, sort } = req.query
+      console.log(req.query)
       page = parseInt(page)
       limit = parseInt(limit)
+      if (search !== 'null') {
+        page = 1
+      } else {
+        console.log(null)
+      }
       const totalData = await movieModel.getDataCount()
 
       const totalPage = Math.ceil(totalData / limit)
@@ -22,8 +28,14 @@ module.exports = {
         totalData
       }
 
-      const result = await movieModel.getDataAll(limit, offset)
-      return helper.response(res, 200, 'Succes Get Data', result, pageInfo)
+      const result = await movieModel.getDataAll(search, sort, limit, offset)
+      return helper.response(
+        res,
+        200,
+        `Succes Get Data, Search Data, and Sort by ${sort}`,
+        result,
+        pageInfo
+      )
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -49,10 +61,25 @@ module.exports = {
   postMovie: async (req, res) => {
     try {
       console.log(req.body)
-      const { movieName, movieReleaseDate } = req.body
+      const {
+        movieName,
+        movieCategory,
+        movieReleaseDate,
+        movieDirector,
+        movieDuration,
+        movieCast,
+        movieSynopsis
+      } = req.body
       const setData = {
         movie_name: movieName,
-        movie_release_date: movieReleaseDate
+        movie_category: movieCategory,
+        movie_release_date: movieReleaseDate,
+        movie_director: movieDirector,
+        movie_duration: movieDuration,
+        movie_cast: movieCast,
+        movie_synopsis: movieSynopsis,
+        movie_created_at: new Date(Date.now()),
+        movie_updated_at: new Date(Date.now())
       }
       const result = await movieModel.createData(setData)
       return helper.response(res, 200, 'Succes Post Movie', result)
@@ -63,25 +90,45 @@ module.exports = {
   updateMovie: async (req, res) => {
     try {
       const { id } = req.params
-      // Kondisi
-      // if (result.length > 0) {
+      console.log(req.params)
+      const {
+        movieName,
+        movieCategory,
+        movieReleaseDate,
+        movieDirector,
+        movieDuration,
+        movieCast,
+        movieSynopsis
+      } = req.body
+      const setData = {
+        movie_name: movieName,
+        movie_category: movieCategory,
+        movie_release_date: movieReleaseDate,
+        movie_director: movieDirector,
+        movie_duration: movieDuration,
+        movie_cast: movieCast,
+        movie_synopsis: movieSynopsis,
+        movie_created_at: new Date(Date.now()),
+        movie_updated_at: new Date(Date.now())
+      }
+      console.log(setData)
+      const result = await movieModel.updateData(setData, id)
+      // if (id.length > 0) {
       //   return helper.response(
       //     res,
       //     200,
-      //     `Succes Get Data By Id = ${id}`,
+      //     `Succes Update Data By Id = ${id}`,
       //     result
       //   )
       // } else {
       //   return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
       // }
-      const { movieName, movieReleaseDate } = req.body
-      const setData = {
-        movie_name: movieName,
-        movie_release_date: movieReleaseDate,
-        updated_at: new Date(Date.now())
-      }
-      const result = await movieModel.updateData(setData, id)
-      return helper.response(res, 200, 'Succes Update Movie', result)
+      return helper.response(
+        res,
+        200,
+        `Succes Update Data By Id = ${id}`,
+        result
+      )
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -90,6 +137,12 @@ module.exports = {
     try {
       const { id } = req.params
       const result = await movieModel.deleteData(id)
+      console.log(result)
+      // if (result > 0) {
+      //   return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
+      // } else {
+      //   return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
+      // }
       return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
