@@ -13,7 +13,7 @@ Process of making backend for TwoxOne
 ## Update Project
 
 Update Date  : 13/04/2021 <br>
-Update Note  : CRUD in 4 table<br> All Database except 'premiere'
+Update Note  :<br> CRUD in 4 table<br> All Database except 'premiere'
 
 ## Getting Started
 
