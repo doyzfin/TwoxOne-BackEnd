@@ -74,7 +74,7 @@ module.exports = {
   searchName: (movieName) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM movie WHERE movie_name  LIKE ?',
+        'SELECT * FROM movie WHERE movie_name  LIKE "%"?"%"',
         movieName,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))

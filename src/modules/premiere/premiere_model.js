@@ -45,7 +45,7 @@ module.exports = {
   searchbyName: (premiereName) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM location WHERE location_name LIKE ?',
+        'SELECT * FROM location WHERE location_name LIKE "%"?"%"',
         premiereName,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
