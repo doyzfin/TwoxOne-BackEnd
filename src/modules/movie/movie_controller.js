@@ -8,18 +8,22 @@ module.exports = {
   getAllMovie: async (req, res) => {
     try {
       let { search, page, limit, sort } = req.query
-      console.log(req.query)
       page = parseInt(page)
       limit = parseInt(limit)
-      if (search !== 'null') {
+      if (!sort) {
+        sort = 'movie_name ASC'
+      }
+      if (!search) {
+        search = ''
+      }
+      if (!limit) {
+        limit = 10
+      }
+      if (!page) {
         page = 1
-      } else {
-        console.log(null)
       }
       const totalData = await movieModel.getDataCount()
-
       const totalPage = Math.ceil(totalData / limit)
-
       const offset = page * limit - limit
       const pageInfo = {
         page,
@@ -27,15 +31,18 @@ module.exports = {
         limit,
         totalData
       }
-
       const result = await movieModel.getDataAll(search, sort, limit, offset)
-      return helper.response(
-        res,
-        200,
-        `Succes Get Data, Search Data, and Sort by ${sort}`,
-        result,
-        pageInfo
-      )
+      if (result.length > 0) {
+        return helper.response(
+          res,
+          200,
+          `Succes Get Data, Search Data, and Sort by ${sort}`,
+          result,
+          pageInfo
+        )
+      } else {
+        return helper.response(res, 404, 'Data Not Found ', null, pageInfo)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -112,23 +119,18 @@ module.exports = {
         movie_updated_at: new Date(Date.now())
       }
       console.log(setData)
-      const result = await movieModel.updateData(setData, id)
-      // if (id.length > 0) {
-      //   return helper.response(
-      //     res,
-      //     200,
-      //     `Succes Update Data By Id = ${id}`,
-      //     result
-      //   )
-      // } else {
-      //   return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
-      // }
-      return helper.response(
-        res,
-        200,
-        `Succes Update Data By Id = ${id}`,
-        result
-      )
+      const getData = await movieModel.getDataById(id)
+      if (getData.length > 0) {
+        const result = await movieModel.updateData(setData, id)
+        return helper.response(
+          res,
+          200,
+          `Succes Update Data By Id = ${id}`,
+          result
+        )
+      } else {
+        return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -136,32 +138,13 @@ module.exports = {
   deleteMovie: async (req, res) => {
     try {
       const { id } = req.params
-      const result = await movieModel.deleteData(id)
-      console.log(result)
-      // if (result > 0) {
-      //   return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
-      // } else {
-      //   return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
-      // }
-      return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
-    } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-    }
-  },
-  searchbyName: async (req, res) => {
-    try {
-      const { movieName } = req.query
-      console.log(movieName)
-      const result = await movieModel.searchName(movieName)
-      return helper.response(res, 200, 'Succes search movie by ', result)
-    } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-    }
-  },
-  sortYear: async (req, res) => {
-    try {
-      const result = await movieModel.sorting()
-      return helper.response(res, 200, 'Succes Sorting', result)
+      const getData = await movieModel.getDataById(id)
+      if (getData.length > 0) {
+        const result = await movieModel.deleteData(id)
+        return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
+      } else {
+        return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }

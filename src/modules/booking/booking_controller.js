@@ -12,8 +12,10 @@ module.exports = {
         bookingTicket,
         bookingTotalPrice,
         bookingPaymentMethod,
-        bookingStatus
+        bookingStatus,
+        bookingSeatLocation
       } = req.body
+
       const setData = {
         premiere_id: premiereId,
         booking_ticket: bookingTicket,
@@ -22,6 +24,17 @@ module.exports = {
         booking_status: bookingStatus
       }
       const result = await bookingModel.postData(setData)
+      console.log(result)
+
+      bookingSeatLocation.forEach((element) => {
+        const setDataSeat = {
+          booking_id: result.id,
+          booking_seat_location: element
+        }
+        console.log(setDataSeat)
+        // eslint-disable-next-line no-unused-vars
+        const resultSeat = bookingModel.postBookingSeat(setDataSeat)
+      })
       return helper.response(res, 200, 'Succes Post Data Booking', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
