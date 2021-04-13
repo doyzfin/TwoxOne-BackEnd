@@ -23,14 +23,17 @@
 5. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
-8. You can see all the end point [here](https://documenter.getpostman.com/view/9852901/TzJoEfvL)
+8. You can see all the end point [here](https://web.postman.co/workspace/My-Workspace~2851628f-3750-4a48-8dc3-39b5f15ba292/documentation/14949975-77b1fc5c-ff48-49e5-b520-f1d99a758284)
 
 ## Set up .env file
 
 Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
-DB_HOST=localhost // Database host
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_DATABASE= twoxone
 ```
 
 ## License
