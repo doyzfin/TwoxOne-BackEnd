@@ -43,21 +43,11 @@ module.exports = {
       )
     })
   },
-  searchByTime: (searchTime) => {
+  getId: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM schedule WHERE schedule_time LIKE "%"?"%"',
-        searchTime,
-        (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
-        }
-      )
-    })
-  },
-  sortByTime: () => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'SELECT * FROM schedule ORDER BY schedule_time ASC',
+        'SELECT * FROM schedule WHERE schedule_id = ?',
+        id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }

@@ -42,21 +42,11 @@ module.exports = {
       )
     })
   },
-  searchbyName: (premiereName) => {
+  getId: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM location WHERE location_name LIKE "%"?"%"',
-        premiereName,
-        (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
-        }
-      )
-    })
-  },
-  sortbyName: () => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'SELECT *FROM location ORDER BY location_name ASC',
+        'SELECT * FROM location WHERE location_id = ?',
+        id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }

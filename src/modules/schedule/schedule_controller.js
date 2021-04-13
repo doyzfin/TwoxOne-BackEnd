@@ -36,8 +36,13 @@ module.exports = {
         schedule_date: scheduleDate,
         schedule_time: scheduleTime
       }
-      const result = await scheduleModel.updatedataTime(setData, id)
-      return helper.response(res, 200, 'Succes Update Time Data', result)
+      const getId = await scheduleModel.getId(id)
+      if (getId.length > 0) {
+        const result = await scheduleModel.updatedataTime(setData, id)
+        return helper.response(res, 200, 'Succes Update Time Data', result)
+      } else {
+        return helper.response(res, 404, 'Data Not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -45,27 +50,15 @@ module.exports = {
   deleteScheduleTime: async (req, res) => {
     try {
       const { id } = req.params
-      const result = await scheduleModel.deletedataTime(id)
-      return helper.response(res, 200, 'Succes Delete Data', result)
+      const getId = await scheduleModel.getId(id)
+      if (getId.length > 0) {
+        const result = await scheduleModel.deletedataTime(id)
+        return helper.response(res, 200, 'Succes Delete Time Data', result)
+      } else {
+        return helper.response(res, 404, 'Data Not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
   }
-  // searchData: async (req, res) => {
-  //   try {
-  //     const { searchTime } = req.query
-  //     const result = await scheduleModel.searchByTime(searchTime)
-  //     return helper.response(res, 200, 'Succes Search Time', result)
-  //   } catch (error) {
-  //     return helper.response(res, 400, 'Bad Request', error)
-  //   }
-  // },
-  // sortData: async (req, res) => {
-  //   try {
-  //     const result = await scheduleModel.sortByTime()
-  //     return helper.response(res, 200, 'Succes Sort by Time', result)
-  //   } catch (error) {
-  //     return helper.response(res, 400, 'Bad Request', error)
-  //   }
-  // }
 }

@@ -35,8 +35,13 @@ module.exports = {
         location_name: locationName,
         location_address: locationAddress
       }
-      const result = await locationModel.updateData(setData, id)
-      return helper.response(res, 200, 'Succes Update Movie', result)
+      const getId = await locationModel.getId(id)
+      if (getId.length > 0) {
+        const result = await locationModel.updateData(setData, id)
+        return helper.response(res, 200, 'Succes Update ', result)
+      } else {
+        return helper.response(res, 404, 'Data Not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
@@ -44,27 +49,15 @@ module.exports = {
   deletelocation: async (req, res) => {
     try {
       const { id } = req.params
-      const result = await locationModel.deleteData(id)
-      return helper.response(res, 200, `Succes Delete by ${id}`, result)
+      const getId = await locationModel.getId(id)
+      if (getId.length > 0) {
+        const result = await locationModel.deleteData(id)
+        return helper.response(res, 200, 'Succes Delete Movie', result)
+      } else {
+        return helper.response(res, 404, 'Data Not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
   }
 }
-// searchlocation: async (req, res) => {
-//   try {
-//     const { locationName } = req.query
-//     const result = await locationModel.searchbyName(locationName)
-//     return helper.response(res, 200, 'Succes Search', result)
-//   } catch (error) {
-//     return helper.response(res, 400, 'Bad Request', error)
-//   }
-// },
-// sortlocation: async (req, res) => {
-//   try {
-//     const result = await locationModel.sortbyName()
-//     return helper.response(res, 200, 'Succes Sort', result)
-//   } catch (error) {
-//     return helper.response(res, 400, 'Bad Request', error)
-//   }
-// }
