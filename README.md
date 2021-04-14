@@ -1,6 +1,6 @@
-<h1 align="center">ExpressJS - TwoxOne Rest API (BackEnd)</h1>
+<h1 align="center">ExpressJS<br>TwoxOne Rest API (BackEnd)</h1>
 
-Procces Making Backend of TwoxOne. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+Procces Making Backend of TwoxOne.<br> [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
