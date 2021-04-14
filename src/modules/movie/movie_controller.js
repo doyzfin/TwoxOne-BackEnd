@@ -11,7 +11,7 @@ module.exports = {
       page = parseInt(page)
       limit = parseInt(limit)
       if (!sort) {
-        sort = 'movie_name ASC'
+        sort = 'movie_id ASC'
       }
       if (!search) {
         search = ''

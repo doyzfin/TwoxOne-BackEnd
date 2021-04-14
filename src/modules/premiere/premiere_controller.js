@@ -19,8 +19,40 @@ module.exports = {
   },
   getPremiereData: async (req, res) => {
     try {
-      const result = await premiereModel.getAllData()
-      return helper.response(res, 200, 'Success Get Data', result)
+      let { search, page, limit, sort } = req.query
+      page = parseInt(page)
+      limit = parseInt(limit)
+      if (!sort) {
+        sort = 'premiere_id ASC'
+      }
+      if (!search) {
+        search = ''
+      }
+      if (!limit) {
+        limit = 10
+      }
+      if (!page) {
+        page = 1
+      }
+      const totalData = await premiereModel.getDataCount()
+      const totalPage = Math.ceil(totalData / limit)
+      const offset = page * limit - limit
+      const pageInfo = {
+        page,
+        totalPage,
+        limit,
+        totalData
+      }
+      const result = await premiereModel.getAllData(search, sort, limit, offset)
+      // const result = await premiereModel.getAllData()
+      if (result.length > 0) {
+        return helper.response(res, 200, 'Success Get Data Premiere', [
+          result,
+          pageInfo
+        ])
+      } else {
+        return helper.response(res, 404, 'Data Not Found', null)
+      }
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }

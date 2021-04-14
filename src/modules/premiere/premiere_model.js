@@ -13,20 +13,25 @@ module.exports = {
       )
     })
   },
-  // createDataMovie: (setDataM) => {
-  //   return new Promise((resolve, reject) => {
-  //     connection.query('INSERT INTO movie SET ?', setDataM, (error, result) => {
-  //       !error
-  //         ? resolve({ id: result.insertId, ...setDataM })
-  //         : reject(new Error(error))
-  //     })
-  //   })
-  // },
-  getAllData: () => {
+  getAllData: (search, sort, limit, offset) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM premiere', (error, result) => {
-        !error ? resolve(result) : reject(new Error(error))
-      })
+      connection.query(
+        `SELECT * FROM premiere WHERE premiere_name LIKE "%"?"%" ORDER BY ${sort} LIMIT ? OFFSET ?`,
+        [search, limit, offset],
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataCount: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT COUNT(*) AS total  FROM premiere',
+        (error, result) => {
+          !error ? resolve(result[0].total) : reject(new Error(error))
+        }
+      )
     })
   },
   getId: (id) => {
