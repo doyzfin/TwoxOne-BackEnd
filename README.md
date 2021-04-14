@@ -1,6 +1,6 @@
 <h1 align="center">ExpressJS - TwoxOne Rest API (BackEnd)</h1>
 
-#Procces Making Backend of TwoxOne. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+Procces Making Backend of TwoxOne. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
@@ -30,10 +30,12 @@
 Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
+
 DB_HOST=localhost
 DB_USER=root
 DB_PASS=
 DB_DATABASE= twoxone
+
 ```
 
 ## License
