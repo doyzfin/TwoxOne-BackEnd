@@ -20,10 +20,10 @@ Procces Making Backend of TwoxOne.<br> [More about Express](https://en.wikipedia
 2. Type `npm install`
 3. Make new file a called **.env**, set up first [here](#set-up-env-file)
 4. Turn on Web Server and MySQL can using Third-party tool like xampp, etc.
-5. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
+5. Create a database with the name `twoxone`, and Import file sql to **phpmyadmin**
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
-8. You can see all the end point [here](https://web.postman.co/workspace/My-Workspace~2851628f-3750-4a48-8dc3-39b5f15ba292/documentation/14949975-77b1fc5c-ff48-49e5-b520-f1d99a758284)
+8. You can see all the end point [here](https://documenter.getpostman.com/view/14949975/TzJphegT)
 
 ## Set up .env file
 
