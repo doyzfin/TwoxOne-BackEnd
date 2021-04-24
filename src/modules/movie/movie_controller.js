@@ -65,6 +65,25 @@ module.exports = {
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
+  getMovieByMonth: async (req, res) => {
+    try {
+      console.log(req.params)
+      const { id } = req.params
+      const result = await movieModel.getDataByMonth(id)
+      if (result.length > 0) {
+        return helper.response(
+          res,
+          200,
+          `Succes Get Data By Id =${id} `,
+          result
+        )
+      } else {
+        return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
+      }
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
   postMovie: async (req, res) => {
     try {
       console.log(req.body)

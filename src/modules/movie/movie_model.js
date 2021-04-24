@@ -33,6 +33,17 @@ module.exports = {
       )
     })
   },
+  getDataByMonth: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM movie WHERE MONTH(movie_release_date) = ${id}`,
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
   createData: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query('INSERT INTO movie SET ?', setData, (error, result) => {
