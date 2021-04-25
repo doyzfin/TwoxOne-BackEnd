@@ -17,6 +17,14 @@ module.exports = {
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
+  getAllDataDB: async (req, res) => {
+    try {
+      const result = await premiereModel.getDataDB()
+      return helper.response(res, 200, 'Succes ', result)
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
   getPremiereData: async (req, res) => {
     try {
       let { search, page, limit, sort } = req.query
