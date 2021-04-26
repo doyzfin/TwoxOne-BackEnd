@@ -71,6 +71,19 @@ module.exports = {
       )
     })
   },
+  postPremiereMovie: (setData2) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'INSERT INTO premiere SET ?',
+        setData2,
+        (error, result) => {
+          !error
+            ? resolve({ id: result.insertId, ...setData2 })
+            : reject(new Error(error))
+        }
+      )
+    })
+  },
   deleteData: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(

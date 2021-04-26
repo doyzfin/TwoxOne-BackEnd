@@ -94,7 +94,8 @@ module.exports = {
         movieDirector,
         movieDuration,
         movieCast,
-        movieSynopsis
+        movieSynopsis,
+        premiereName
       } = req.body
       const setData = {
         movie_name: movieName,
@@ -108,6 +109,13 @@ module.exports = {
         movie_updated_at: new Date(Date.now())
       }
       const result = await movieModel.createData(setData)
+
+      const setData2 = {
+        movie_id: result.id,
+        premiere_name: premiereName
+      }
+      // eslint-disable-next-line no-unused-vars
+      const resultSeat = await movieModel.postPremiereMovie(setData2)
       return helper.response(res, 200, 'Succes Post Movie', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
