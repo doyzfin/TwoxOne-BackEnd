@@ -5,11 +5,13 @@ const locationRouter = require('../modules/location/location_routes')
 const scheduleRouter = require('../modules/schedule/schedule_routes')
 const bookingRouter = require('../modules/booking/booking_routes')
 const premiereRouter = require('../modules/premiere/premiere_routes')
+const authRouter = require('../modules/auth/auth_routes')
 
 Route.use('/movie', movieRouter)
 Route.use('/location', locationRouter)
 Route.use('/schedule', scheduleRouter)
 Route.use('/booking', bookingRouter)
 Route.use('/premiere', premiereRouter)
+Route.use('/auth', authRouter)
 
 module.exports = Route
