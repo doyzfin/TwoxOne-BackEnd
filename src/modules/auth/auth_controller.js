@@ -25,7 +25,7 @@ module.exports = {
           checkEmailUser[0].user_email
         )
       } else {
-        if (userName === 'admin' && userName === 'admin') {
+        if (userEmail === 'admin' && userName === 'admin') {
           const setData = {
             user_name: userName,
             user_email: userEmail,
