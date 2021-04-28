@@ -27,6 +27,11 @@ module.exports = {
     console.log(req.decodeToken)
     // tambah user_type di db
     // kondisi cek admin
+    if (req.decodeToken.user_type !== 'admin') {
+      return helper.response(res, 403, 'This only for Admin')
+    } else {
+      next()
+    }
     next()
   }
 }

@@ -13,11 +13,7 @@ module.exports = {
       const encryptPassword = bcrypt.hashSync(userPassword, salt)
       console.log(`before Encrypt = ${userPassword}`)
       console.log(`after Encrypt = ${encryptPassword}`)
-      const setData = {
-        user_name: userName,
-        user_email: userEmail,
-        user_password: encryptPassword
-      }
+
       const checkEmailUser = await authModel.getDataCondition({
         user_email: userEmail
       })
@@ -29,15 +25,28 @@ module.exports = {
           checkEmailUser[0].user_email
         )
       } else {
-        const result = await authModel.register(setData)
-        delete result.user_password
-        return helper.response(res, 200, 'Success Register', result)
+        if (userName === 'admin' && userName === 'admin') {
+          const setData = {
+            user_name: userName,
+            user_email: userEmail,
+            user_password: encryptPassword,
+            user_type: 'admin'
+          }
+          const result = await authModel.register(setData)
+          delete result.user_password
+          return helper.response(res, 200, 'Success Register as Admin', result)
+        } else {
+          const setData = {
+            user_name: userName,
+            user_email: userEmail,
+            user_password: encryptPassword,
+            user_type: 'user'
+          }
+          const result = await authModel.register(setData)
+          delete result.user_password
+          return helper.response(res, 200, 'Success Register', result)
+        }
       }
-      //
-      // }
-      // kondisi cek email apa ada di db
-      // jika ada di db maka res gagal
-      // jika tidak ada maka ke model
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }

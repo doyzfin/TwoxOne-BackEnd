@@ -1,3 +1,5 @@
+const redis = require('redis')
+const client = redis.createClient()
 const helper = require('../../helpers/wrapper')
 // const { getDataAll } = require('./movie_model')
 const movieModel = require('./movie_model')
@@ -32,6 +34,11 @@ module.exports = {
         totalData
       }
       const result = await movieModel.getDataAll(search, sort, limit, offset)
+      client.setex(
+        `getmovie:${JSON.stringify(req.query)}`,
+        3600,
+        JSON.stringify({ result, pageInfo })
+      )
       if (result.length > 0) {
         return helper.response(
           res,
@@ -52,6 +59,7 @@ module.exports = {
       const { id } = req.params
       const result = await movieModel.getDataById(id)
       if (result.length > 0) {
+        client.set(`getmovie:${id}`, JSON.stringify(result))
         return helper.response(
           res,
           200,
