@@ -32,6 +32,5 @@ module.exports = {
     } else {
       next()
     }
-    next()
   }
 }
