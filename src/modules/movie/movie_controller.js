@@ -1,6 +1,7 @@
 const redis = require('redis')
 const client = redis.createClient()
 const helper = require('../../helpers/wrapper')
+const fs = require('fs')
 // const { getDataAll } = require('./movie_model')
 const movieModel = require('./movie_model')
 module.exports = {
@@ -175,8 +176,18 @@ module.exports = {
     try {
       const { id } = req.params
       const getData = await movieModel.getDataById(id)
+
       if (getData.length > 0) {
         const result = await movieModel.deleteData(id)
+        if (fs.existsSync(`/src/uploads/${getData[0].movie_image}`)) {
+          // Do something
+          fs.unlink(`${getData[0].movie_image}`, function (err) {
+            if (err) throw err
+            // if no error, file has been deleted successfully
+            console.log('File deleted!')
+          })
+        }
+
         return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
       } else {
         return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)

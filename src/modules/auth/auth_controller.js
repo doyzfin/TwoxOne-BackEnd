@@ -11,8 +11,8 @@ module.exports = {
       // proses encrypt
       const salt = bcrypt.genSaltSync(10)
       const encryptPassword = bcrypt.hashSync(userPassword, salt)
-      console.log(`before Encrypt = ${userPassword}`)
-      console.log(`after Encrypt = ${encryptPassword}`)
+      // console.log(`before Encrypt = ${userPassword}`)
+      // console.log(`after Encrypt = ${encryptPassword}`)
 
       const checkEmailUser = await authModel.getDataCondition({
         user_email: userEmail

@@ -15,13 +15,17 @@ Route.get('/hello', movieController.sayHello)
 Route.get(
   '/',
   authMiddleware.authentication,
-  authMiddleware.isAdmin,
   redisMiddleware.getMovieRedis,
   movieController.getAllMovie
 )
-Route.get('/month/:id', movieController.getMovieByMonth)
+Route.get(
+  '/month/:id',
+  authMiddleware.authentication,
+  movieController.getMovieByMonth
+)
 Route.get(
   '/:id',
+  authMiddleware.authentication,
   redisMiddleware.getMovieByIdRedis,
   movieController.getMovieById
 )
@@ -36,11 +40,15 @@ Route.post(
 )
 Route.patch(
   '/:id',
+  authMiddleware.authentication,
+  authMiddleware.isAdmin,
   redisMiddleware.clearDataMovieRedis,
   movieController.updateMovie
 )
 Route.delete(
   '/:id',
+  authMiddleware.authentication,
+  authMiddleware.isAdmin,
   redisMiddleware.clearDataMovieRedis,
   movieController.deleteMovie
 )

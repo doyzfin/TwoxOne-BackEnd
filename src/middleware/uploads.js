@@ -17,11 +17,17 @@ const fileFilter = (req, file, cb) => {
   if (listExt.includes(ext)) {
     cb(null, true)
   } else {
-    cb(new Error('Extention file must be jpg or something'), false)
+    cb(new Error('Extention file must be jpg or png'), false)
   }
 }
 
-const upload = multer({ storage, fileFilter }).single('movieImage')
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 512 * 512
+  }
+}).single('movieImage')
 
 const uploadFilter = (req, res, next) => {
   upload(req, res, function (err) {
