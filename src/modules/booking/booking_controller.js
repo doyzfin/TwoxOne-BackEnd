@@ -1,5 +1,7 @@
 const helper = require('../../helpers/wrapper')
 const bookingModel = require('./booking_model')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   sayHello: (req, res) => {
@@ -43,6 +45,11 @@ module.exports = {
   getBookingData: async (req, res) => {
     try {
       const result = await bookingModel.getDataBooking()
+      client.setex(
+        `getDataBooking:${JSON.stringify(req.query)}`,
+        3600,
+        JSON.stringify(result)
+      )
       return helper.response(res, 200, 'Succes Get All Data Booking', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)

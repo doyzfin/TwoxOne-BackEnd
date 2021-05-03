@@ -134,7 +134,6 @@ module.exports = {
   updateMovie: async (req, res) => {
     try {
       const { id } = req.params
-      console.log(req.params)
       const {
         movieName,
         movieCategory,
@@ -152,19 +151,38 @@ module.exports = {
         movie_duration: movieDuration,
         movie_cast: movieCast,
         movie_synopsis: movieSynopsis,
+        movie_image: req.file ? req.file.filename : '',
         movie_created_at: new Date(Date.now()),
         movie_updated_at: new Date(Date.now())
       }
-      console.log(setData)
       const getData = await movieModel.getDataById(id)
       if (getData.length > 0) {
         const result = await movieModel.updateData(setData, id)
-        return helper.response(
-          res,
-          200,
-          `Succes Update Data By Id = ${id}`,
-          result
-        )
+        console.log(req.file.filename)
+        console.log(result.movie_image)
+        if (result.movie_image !== req.file.filename) {
+          return helper.response(
+            res,
+            200,
+            `Succes Update Data By Id = ${id} And Img`,
+            result
+          )
+        } else {
+          const src = `src/uploads/${getData[0].movie_image}`
+          if (fs.existsSync(src)) {
+            fs.unlink(src, function (err) {
+              if (err) throw err
+              // if no error, file has been deleted successfully
+              console.log('File deleted!')
+            })
+          }
+          return helper.response(
+            res,
+            200,
+            `Succes Update Data By Id = ${id}`,
+            result
+          )
+        }
       } else {
         return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)
       }
@@ -179,9 +197,9 @@ module.exports = {
 
       if (getData.length > 0) {
         const result = await movieModel.deleteData(id)
-        if (fs.existsSync(`/src/uploads/${getData[0].movie_image}`)) {
-          // Do something
-          fs.unlink(`${getData[0].movie_image}`, function (err) {
+        const src = `src/uploads/${getData[0].movie_image}`
+        if (fs.existsSync(src)) {
+          fs.unlink(src, function (err) {
             if (err) throw err
             // if no error, file has been deleted successfully
             console.log('File deleted!')

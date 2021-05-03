@@ -1,22 +1,20 @@
 const express = require('express')
 const Route = express.Router()
-
-const bookingController = require('./booking_controller')
+const userController = require('./user_controller')
 const authMiddleware = require('../../middleware/auth')
+// const uploadFile = require('../../middleware/uploads')
 const redisMiddleware = require('../../middleware/redis')
 
-Route.get('/hello', bookingController.sayHello)
-Route.post(
-  '/',
-  authMiddleware.authentication,
-  authMiddleware.isAdmin,
-  bookingController.postBooking
-)
 Route.get(
-  '/',
+  '/:id',
   authMiddleware.authentication,
-  redisMiddleware.getDataBooking,
-  bookingController.getBookingData
+  redisMiddleware.getUserId,
+  userController.getDataUser
+)
+Route.patch(
+  '/:id',
+  authMiddleware.authentication,
+  userController.updateDataUser
 )
 
 module.exports = Route

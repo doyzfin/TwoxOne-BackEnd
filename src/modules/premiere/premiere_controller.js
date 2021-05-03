@@ -1,4 +1,7 @@
 const helper = require('../../helpers/wrapper')
+const redis = require('redis')
+const client = redis.createClient()
+
 const premiereModel = require('./premiere_model')
 module.exports = {
   postPremiereData: async (req, res) => {
@@ -20,6 +23,11 @@ module.exports = {
   getAllDataDB: async (req, res) => {
     try {
       const result = await premiereModel.getDataDB()
+      client.setex(
+        `getpremiereAllDB:${JSON.stringify(req.query)}`,
+        3600,
+        JSON.stringify({ result })
+      )
       return helper.response(res, 200, 'Succes ', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
@@ -52,6 +60,11 @@ module.exports = {
         totalData
       }
       const result = await premiereModel.getAllData(search, sort, limit, offset)
+      client.setex(
+        `getpremiere:${JSON.stringify(req.query)}`,
+        3600,
+        JSON.stringify({ result, pageInfo })
+      )
       // const result = await premiereModel.getAllData()
       if (result.length > 0) {
         return helper.response(res, 200, 'Success Get Data Premiere', [

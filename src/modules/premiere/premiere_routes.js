@@ -1,11 +1,44 @@
 const express = require('express')
 const Route = express.Router()
 const premiereController = require('./premiere_controller')
+const authMiddleware = require('../../middleware/auth')
+const uploadFile = require('../../middleware/uploads')
+const redisMiddleware = require('../../middleware/redis')
 
-Route.post('/', premiereController.postPremiereData)
-Route.get('/', premiereController.getPremiereData)
-Route.get('/db', premiereController.getAllDataDB)
-Route.patch('/:id', premiereController.updatePremiereData)
-Route.delete('/:id', premiereController.deletePremiereData)
+Route.post(
+  '/',
+  authMiddleware.authentication,
+  authMiddleware.isAdmin,
+  uploadFile,
+  redisMiddleware.clearDataPremiere,
+  premiereController.postPremiereData
+)
+Route.get(
+  '/',
+  authMiddleware.authentication,
+  redisMiddleware.getDataPremiere,
+  premiereController.getPremiereData
+)
+Route.get(
+  '/db',
+  authMiddleware.authentication,
+  redisMiddleware.getDataPremiere,
+  premiereController.getAllDataDB
+)
+Route.patch(
+  '/:id',
+  authMiddleware.authentication,
+  authMiddleware.isAdmin,
+  uploadFile,
+  redisMiddleware.clearDataPremiere,
+  premiereController.updatePremiereData
+)
+Route.delete(
+  '/:id',
+  authMiddleware.authentication,
+  authMiddleware.isAdmin,
+  redisMiddleware.clearDataPremiere,
+  premiereController.deletePremiereData
+)
 
 module.exports = Route
