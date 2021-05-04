@@ -40,11 +40,12 @@ module.exports = {
       if (!error && result != null) {
         console.log('Data in Redis')
         const newResult = JSON.parse(result)
+
         return helper.response(
           res,
           200,
           'Success Get All Movies',
-          newResult.data,
+          newResult.result,
           newResult.pageInfo
         )
       } else {
@@ -105,6 +106,17 @@ module.exports = {
   },
   clearDataPremiere: (req, res, next) => {
     client.keys('getpremiere*', (_error, result) => {
+      // console.log(result)
+      if (result.length > 0) {
+        result.forEach((item) => {
+          client.del(item)
+        })
+      }
+      next()
+    })
+  },
+  clearDataUser: (req, res, next) => {
+    client.keys('getUser*', (_error, result) => {
       // console.log(result)
       if (result.length > 0) {
         result.forEach((item) => {

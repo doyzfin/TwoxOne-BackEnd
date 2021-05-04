@@ -12,18 +12,18 @@ module.exports = {
           (error && error.name === 'JsonWebTokenError') ||
           (error && error.name === 'TokenExpiredError')
         ) {
-          const refreshedToken = jwt.sign(
-            {
-              success: true
-            },
-            'RAHASIA',
-            {
-              expiresIn: '1m'
-            }
-          )
-          req.decodeToken = refreshedToken
-          next()
-          // return helper.response(res, 403, error.message)
+          // const refreshedToken = jwt.sign(
+          //   {
+          //     success: true
+          //   },
+          //   'RAHASIA',
+          //   {
+          //     expiresIn: '1m'
+          //   }
+          // )
+          // req.decodeToken = refreshedToken
+          // next()
+          return helper.response(res, 403, error.message)
         } else {
           req.decodeToken = result
           next()

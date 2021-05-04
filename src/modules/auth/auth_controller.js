@@ -20,12 +20,12 @@ module.exports = {
       if (checkEmailUser.length > 0) {
         return helper.response(
           res,
-          400,
+          401,
           'Email is ON',
           checkEmailUser[0].user_email
         )
       } else {
-        if (userEmail === 'admin' && userName === 'admin') {
+        if (userName === 'admin') {
           const setData = {
             user_id: userId,
             user_name: userName,
@@ -34,7 +34,7 @@ module.exports = {
             user_type: 'admin'
           }
           const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.email',
+            host: 'smtp.gmail.com',
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
@@ -115,7 +115,7 @@ module.exports = {
           const payload = checkEmailUser[0]
           delete payload.user_password
           const token = jwt.sign({ ...payload }, 'RAHASIA', {
-            expiresIn: '1m'
+            expiresIn: '24h'
           })
           const result = { ...payload, token }
           return helper.response(res, 200, 'Success Login', result)
