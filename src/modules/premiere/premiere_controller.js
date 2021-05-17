@@ -1,12 +1,20 @@
 const helper = require('../../helpers/wrapper')
 const redis = require('redis')
 const client = redis.createClient()
-
+const scheduleModel = require('../../modules/schedule/schedule_model')
 const premiereModel = require('./premiere_model')
 module.exports = {
   postPremiereData: async (req, res) => {
     try {
-      const { locationId, movieId, premiereName, premierePrice } = req.body
+      const {
+        locationId,
+        movieId,
+        premiereName,
+        premierePrice,
+        scheduleTime,
+        scheduleStart,
+        scheduleEnd
+      } = req.body
       console.log(req.body)
       const setData = {
         location_id: locationId,
@@ -15,6 +23,17 @@ module.exports = {
         premiere_price: premierePrice
       }
       const result = await premiereModel.createData(setData)
+      scheduleTime.forEach((element) => {
+        const setData2 = {
+          premiere_id: result.id,
+          schedule_date_start: scheduleStart,
+          schedule_date_end: scheduleEnd,
+          schedule_time: element
+        }
+        // eslint-disable-next-line no-unused-vars
+        const result2 = scheduleModel.createTime(setData2)
+      })
+
       return helper.response(res, 200, 'Succes Post Movie', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
@@ -23,11 +42,26 @@ module.exports = {
   getAllDataDB: async (req, res) => {
     try {
       const result = await premiereModel.getDataDB()
-      client.setex(
-        `getpremiereAllDB:${JSON.stringify(req.query)}`,
-        3600,
-        JSON.stringify({ result })
-      )
+      console.log(result)
+      // client.setex(
+      //   `getpremiereAllDB:${JSON.stringify(req.query)}`,
+      //   3600,
+      //   JSON.stringify({ result })
+      // )
+      return helper.response(res, 200, 'Succes ', result)
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
+  getAllDataDBId: async (req, res) => {
+    try {
+      const { id } = req.params
+      const result = await premiereModel.getDataDBId(id)
+      // client.setex(
+      //   `getpremiereAllDB:${JSON.stringify(req.query)}`,
+      //   3600,
+      //   JSON.stringify({ result })
+      // )
       return helper.response(res, 200, 'Succes ', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
@@ -39,7 +73,7 @@ module.exports = {
       page = parseInt(page)
       limit = parseInt(limit)
       if (!sort) {
-        sort = 'premiere_id ASC'
+        sort = 'premiere_name ASC'
       }
       if (!search) {
         search = ''
@@ -60,11 +94,11 @@ module.exports = {
         totalData
       }
       const result = await premiereModel.getAllData(search, sort, limit, offset)
-      client.setex(
-        `getpremiere:${JSON.stringify(req.query)}`,
-        3600,
-        JSON.stringify({ result, pageInfo })
-      )
+      // client.setex(
+      //   `getpremiere:${JSON.stringify(req.query)}`,
+      //   3600,
+      //   JSON.stringify({ result, pageInfo })
+      // )
       // const result = await premiereModel.getAllData()
       if (result.length > 0) {
         return helper.response(res, 200, 'Success Get Data Premiere', [

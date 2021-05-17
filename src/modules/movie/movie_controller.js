@@ -194,9 +194,10 @@ module.exports = {
     try {
       const { id } = req.params
       const getData = await movieModel.getDataById(id)
-
-      if (getData.length > 0) {
-        const result = await movieModel.deleteData(id)
+      const isImageExsist = getData[0].movie_image
+      const result = await movieModel.deleteData(id)
+      // kondisi untuk cek ada gambar atau tidak dari get data
+      if (getData.length > 0 && isImageExsist) {
         const src = `src/uploads/${getData[0].movie_image}`
         if (fs.existsSync(src)) {
           fs.unlink(src, function (err) {
@@ -205,7 +206,6 @@ module.exports = {
             console.log('File deleted!')
           })
         }
-
         return helper.response(res, 200, `Succes Delete Movie by ${id}`, result)
       } else {
         return helper.response(res, 404, `Data Not Found By Id = ${id}`, null)

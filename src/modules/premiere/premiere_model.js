@@ -27,8 +27,18 @@ module.exports = {
   getDataDB: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT schedule.schedule_date,schedule.schedule_time,premiere.premiere_id,premiere.movie_id,movie.movie_name,premiere.location_id,location.location_address,location.location_name,premiere.premiere_name,premiere.premiere_price FROM schedule INNER JOIN premiere ON schedule.premiere_id = premiere.premiere_id INNER JOIN movie ON premiere.movie_id = movie.movie_id INNER JOIN location ON premiere.location_id = location.location_id',
-
+        'SELECT schedule.schedule_date_start,schedule.schedule_date_end,schedule.schedule_time,premiere.premiere_id,premiere.movie_id,movie.movie_name,premiere.location_id,location.location_address,location.location_name,premiere.premiere_name,premiere.premiere_price FROM schedule INNER JOIN premiere ON schedule.premiere_id = premiere.premiere_id INNER JOIN movie ON premiere.movie_id = movie.movie_id INNER JOIN location ON premiere.location_id = location.location_id',
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getDataDBId: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT * FROM premiere WHERE movie_id = ?',
+        id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }

@@ -35,7 +35,7 @@ module.exports = {
   deletedataTime: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'DELETE FROM schedule WHERE schedule_id = ?',
+        'DELETE FROM schedule WHERE schedule.premiere_id = ?',
         id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
@@ -46,7 +46,7 @@ module.exports = {
   getId: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM schedule WHERE schedule_id = ?',
+        'SELECT * FROM schedule WHERE schedule.premiere_id = ?',
         id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))

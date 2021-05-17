@@ -54,6 +54,7 @@ module.exports = {
     try {
       const { id } = req.params
       const { userFirst, userLast, userEmail, userPhone } = req.body
+      console.log(userFirst, userLast)
       const setData = {
         user_name: `${userFirst}` + ' ' + `${userLast}`,
         user_email: userEmail,
@@ -104,8 +105,8 @@ module.exports = {
       const encryptConfirmPassword = bcrypt.hashSync(confirmPassword, salt)
       // console.log(id, userPassword, confirmPassword)
 
-      if (userPassword === confirmPassword) {
-        return helper.response(res, 400, 'Password Cannot Same as Old Password')
+      if (userPassword !== confirmPassword) {
+        return helper.response(res, 400, 'Password Must Be Same as your Input')
       } else {
         const setData = {
           user_password: encryptConfirmPassword

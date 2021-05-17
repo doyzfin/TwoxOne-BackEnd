@@ -59,11 +59,12 @@ module.exports = {
       if (!error && result != null) {
         console.log('Data in Redis')
         const newResult = JSON.parse(result)
+        console.log(newResult)
         return helper.response(
           res,
           200,
           'Success Get All Premiere',
-          newResult.data,
+          newResult.result,
           newResult.pageInfo
         )
       } else {

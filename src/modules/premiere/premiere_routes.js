@@ -14,17 +14,19 @@ Route.post(
   premiereController.postPremiereData
 )
 Route.get(
-  '/',
-  authMiddleware.authentication,
-  redisMiddleware.getDataPremiere,
-  premiereController.getPremiereData
-)
-Route.get(
   '/db',
   authMiddleware.authentication,
   redisMiddleware.getDataPremiere,
   premiereController.getAllDataDB
 )
+Route.get(
+  '/',
+  authMiddleware.authentication,
+  redisMiddleware.getDataPremiere,
+  premiereController.getPremiereData
+)
+Route.get('/db/:id', premiereController.getAllDataDBId)
+
 Route.patch(
   '/:id',
   authMiddleware.authentication,
