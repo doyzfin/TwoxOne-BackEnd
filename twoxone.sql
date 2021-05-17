@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2021 at 07:08 AM
+-- Generation Time: May 17, 2021 at 09:50 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -196,7 +196,7 @@ CREATE TABLE `schedule` (
   `schedule_id` int(11) NOT NULL,
   `premiere_id` int(11) NOT NULL,
   `schedule_date_start` date NOT NULL,
-  `schedule_date_end` date NOT NULL DEFAULT current_timestamp(),
+  `schedule_date_end` date NOT NULL,
   `schedule_time` time NOT NULL,
   `schedule_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `schedule_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
