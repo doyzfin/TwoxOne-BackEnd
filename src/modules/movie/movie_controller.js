@@ -11,20 +11,29 @@ module.exports = {
   getAllMovie: async (req, res) => {
     try {
       let { search, page, limit, sort } = req.query
-      page = parseInt(page)
-      limit = parseInt(limit)
-      if (!sort) {
+      if (page === undefined) {
+        page = '1'
+      } else if (page === '') {
+        page = '1'
+      }
+      if (limit === undefined) {
+        limit = '5'
+      } else if (limit === '') {
+        limit = '5'
+      }
+      if (sort === undefined) {
+        sort = 'movie_id ASC'
+      } else if (sort === '') {
         sort = 'movie_id ASC'
       }
-      if (!search) {
+      if (search === undefined) {
+        search = ''
+      } else if (search === '') {
         search = ''
       }
-      if (!limit) {
-        limit = 10
-      }
-      if (!page) {
-        page = 1
-      }
+      page = parseInt(page)
+      limit = parseInt(limit)
+
       const totalData = await movieModel.getDataCount()
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
@@ -120,12 +129,6 @@ module.exports = {
       console.log(setData)
       const result = await movieModel.createData(setData)
 
-      // const setData2 = {
-      //   movie_id: result.id,
-      //   premiere_name: premiereName
-      // }
-      // eslint-disable-next-line no-unused-vars
-      // const resultSeat = await movieModel.postPremiereMovie(setData2)
       return helper.response(res, 200, 'Succes Post Movie', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)

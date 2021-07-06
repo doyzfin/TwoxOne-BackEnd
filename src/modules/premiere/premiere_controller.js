@@ -1,5 +1,6 @@
 const helper = require('../../helpers/wrapper')
 const redis = require('redis')
+// eslint-disable-next-line no-unused-vars
 const client = redis.createClient()
 const scheduleModel = require('../../modules/schedule/schedule_model')
 const premiereModel = require('./premiere_model')

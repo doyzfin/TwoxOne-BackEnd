@@ -4,7 +4,7 @@ module.exports = {
   getDataAll: (search, sort, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM movie WHERE movie_name LIKE "%"?"%" ORDER BY ${sort} LIMIT ? OFFSET ? `,
+        `SELECT * FROM movie WHERE movie_name LIKE '%${search}%' ORDER BY ${sort}  LIMIT ${limit} OFFSET ${offset} `,
         [search, limit, offset],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
