@@ -26,14 +26,13 @@ module.exports = {
         booking_status: bookingStatus
       }
       const result = await bookingModel.postData(setData)
-      console.log(result)
 
       bookingSeatLocation.forEach((element) => {
         const setDataSeat = {
           booking_id: result.id,
           booking_seat_location: element
         }
-        console.log(setDataSeat)
+
         // eslint-disable-next-line no-unused-vars
         const resultSeat = bookingModel.postBookingSeat(setDataSeat)
       })
