@@ -53,5 +53,70 @@ module.exports = {
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
+  },
+  getDataChart: async (req, res) => {
+    try {
+      const { movieId, premiereName, locationId } = req.query
+      if (premiereName && movieId && locationId) {
+        const result = await bookingModel.getChart(
+          locationId,
+          movieId,
+          premiereName
+        )
+        return helper.response(res, 200, 'Succes Get Chart Booking All', result)
+      }
+
+      if (movieId === '') {
+        const result = await bookingModel.getChartDefault()
+        return helper.response(res, 200, 'Succes Get Chart Booking 1', result)
+      } else if (movieId) {
+        const result = await bookingModel.getChartMovie(movieId)
+        return helper.response(
+          res,
+          200,
+          `Succes Get Chart Booking Movie by id ${movieId}`,
+          result
+        )
+      }
+      if (premiereName === '') {
+        const result = await bookingModel.getChartDefault()
+        return helper.response(res, 200, 'Succes Get Chart Booking All', result)
+      } else if (premiereName) {
+        const result = await bookingModel.getChartPremiere(premiereName)
+        return helper.response(
+          res,
+          200,
+          `Succes Get Chart Booking Premiere by name = ${premiereName}`,
+          result
+        )
+      }
+      if (locationId === '') {
+        const result = await bookingModel.getChartDefault()
+        return helper.response(res, 200, 'Succes Get Chart Booking All', result)
+      } else if (locationId) {
+        const result = await bookingModel.getChartLocation(locationId)
+        return helper.response(
+          res,
+          200,
+          `Succes Get Chart Booking Location by id = ${locationId}`,
+          result
+        )
+      }
+      if (
+        premiereName === undefined ||
+        movieId === undefined ||
+        locationId === undefined
+      ) {
+        const result = await bookingModel.getChartDefault()
+        return helper.response(
+          res,
+          200,
+          'Succes Get Chart Booking Default',
+          result
+        )
+      }
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+    }
   }
 }

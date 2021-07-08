@@ -18,5 +18,10 @@ Route.get(
   redisMiddleware.getDataBooking,
   bookingController.getBookingData
 )
+Route.get(
+  '/chart',
+  authMiddleware.authentication,
+  bookingController.getDataChart
+)
 
 module.exports = Route

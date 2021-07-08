@@ -36,5 +36,59 @@ module.exports = {
         }
       )
     })
+  },
+  getChart: (loc, id, name) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT MONTH(booking_created_at) AS month,SUM(booking_total_price) AS total,location.location_name AS loc, premiere.premiere_name AS name, premiere.movie_id AS movie FROM booking JOIN premiere ON booking.premiere_id = premiere.premiere_id JOIN location ON premiere.location_id = location.location_id WHERE YEAR(booking_created_at) = YEAR(NOW()) AND premiere.location_id = ? AND premiere.movie_id =  ? AND premiere.premiere_name LIKE '%${name}%' GROUP BY MONTH(booking_created_at)`,
+        [loc, id, name],
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getChartDefault: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT MONTH(booking_created_at) AS month,SUM(booking_total_price) AS total  FROM booking  WHERE YEAR(booking_created_at) = YEAR(NOW())  GROUP BY MONTH(booking_created_at)',
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getChartMovie: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT MONTH(booking_created_at) AS month,SUM(booking_total_price) AS total,premiere.movie_id AS movie FROM booking JOIN premiere ON booking.premiere_id = premiere.premiere_id WHERE YEAR(booking_created_at) = YEAR(NOW()) AND premiere.movie_id = ?  GROUP BY MONTH(booking_created_at)',
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getChartPremiere: (name) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT MONTH(booking_created_at) AS month,SUM(booking_total_price) AS total, premiere.premiere_name AS name  FROM booking JOIN premiere ON booking.premiere_id = premiere.premiere_id WHERE YEAR(booking_created_at) = YEAR(NOW())  AND premiere.premiere_name LIKE "%${name}%" GROUP BY MONTH(booking_created_at)`,
+        name,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getChartLocation: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT MONTH(booking_created_at) AS month,SUM(booking_total_price) AS total,location.location_name AS loc FROM booking JOIN premiere ON booking.premiere_id = premiere.premiere_id JOIN location ON premiere.location_id = location.location_id WHERE YEAR(booking_created_at) = YEAR(NOW()) AND premiere.location_id = 10 GROUP BY MONTH(booking_created_at)',
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
   }
 }
