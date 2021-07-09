@@ -117,7 +117,7 @@ module.exports = {
           const payload = checkEmailUser[0]
           delete payload.user_password
           const token = jwt.sign({ ...payload }, 'RAHASIA', {
-            expiresIn: '15s'
+            expiresIn: '60s'
           })
           const refreshToken = jwt.sign({ ...payload }, 'RAHASIA', {
             expiresIn: '24h'
@@ -152,7 +152,7 @@ module.exports = {
           ) {
             delete result.iat
             delete result.exp
-            const token = jwt.sign(result, 'RAHASIA', { expiresIn: '15s' })
+            const token = jwt.sign(result, 'RAHASIA', { expiresIn: '60s' })
             const newResult = { ...result, token, refreshToken }
             return helper.response(
               res,
