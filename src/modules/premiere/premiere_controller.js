@@ -1,7 +1,12 @@
 const helper = require('../../helpers/wrapper')
+require('dotenv').config()
 const redis = require('redis')
 // eslint-disable-next-line no-unused-vars
-const client = redis.createClient()
+const client = redis.createClient({
+  host: process.env.REDIS_HOSTNAME,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD
+})
 const scheduleModel = require('../../modules/schedule/schedule_model')
 const premiereModel = require('./premiere_model')
 module.exports = {
